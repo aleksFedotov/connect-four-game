@@ -6,12 +6,18 @@ import { ReactComponent as Logo } from '../../../assets/images/logo.svg';
 import { gameHeaderVariants } from '../../../frameMotinVariats/frameMotionVariants';
 import { useAppDispatch } from '../../../store/hooks';
 import { toggleModal } from '../../../store/modalSlice';
+import { pauseGame, restartGame } from '../../../store/gameSlice';
 
 const GamePageHeader: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const menuHandler = () => {
+    dispatch(pauseGame());
     dispatch(toggleModal());
+  };
+
+  const restartHandler = () => {
+    dispatch(restartGame());
   };
 
   return (
@@ -29,7 +35,7 @@ const GamePageHeader: React.FC = () => {
       </div>
       <Logo />
       <div>
-        <SmallButton>Restart</SmallButton>
+        <SmallButton onClick={restartHandler}>Restart</SmallButton>
       </div>
     </Header>
   );

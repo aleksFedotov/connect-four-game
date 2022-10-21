@@ -167,3 +167,13 @@ export const modalVariants = {
     transition: { duration: 0.5 },
   },
 };
+
+export const whiteCircleVariants = {
+  hidden: {
+    scale: 0,
+  },
+  visible: {
+    scale: 1,
+    transition: { delay: 0.3, duration: 0.5 },
+  },
+};

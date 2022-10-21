@@ -12,7 +12,7 @@ type coordinates = {
 
 type winComb = {
   color: string;
-  counters: counter[];
+  segments: number[][];
 };
 
 const min = (num: number): number => Math.max(num - 3, 0);
@@ -27,15 +27,22 @@ const getWinner = (
 ): boolean | winComb => {
   const segments = [firstSegment, secondSegment, thirdegment, fourthSegment];
   if (segments.length !== 4) return false;
-  const counters = segments.map(([row, col]) => getCounter(row, col, gameGrid));
+  let counters = segments.map(([row, col]) => {
+    return getCounter(row, col, gameGrid);
+  });
+
   const color = counters[0].color;
+
   if (!color) return false;
-  if (counters.every((c) => c.color === color)) return { color, counters };
+  if (counters.every((c) => c.color === color)) {
+    return { color, segments };
+  }
+
   return false;
 };
 
 const checkHorizontalSegments = (
-  { focalRow, minCol, maxCol }: coordinates,
+  { focalRow, minCol, maxCol, focalCol }: coordinates,
   gameGrid: counter[][]
 ) => {
   for (let row = focalRow, col = minCol; col <= maxCol; col++) {
@@ -47,8 +54,9 @@ const checkHorizontalSegments = (
       gameGrid
     );
 
-    return winner;
+    if (winner) return winner;
   }
+  return false;
 };
 
 const checkVerticalSegments = (
@@ -63,8 +71,9 @@ const checkVerticalSegments = (
       [row + 3, col],
       gameGrid
     );
-    return winner;
+    if (winner) return winner;
   }
+  return false;
 };
 
 const checkForwardSlashSegments = (
@@ -92,8 +101,8 @@ const checkForwardSlashSegments = (
       gameGrid
     );
     if (winner) return winner;
-    return false;
   }
+  return false;
 };
 
 const checkBackwardSlashSegments = (
@@ -120,8 +129,8 @@ const checkBackwardSlashSegments = (
       gameGrid
     );
     if (winner) return winner;
-    return false;
   }
+  return false;
 };
 
 export const checkForWin = (

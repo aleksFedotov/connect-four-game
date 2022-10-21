@@ -10,6 +10,7 @@ import { MenuButton } from '../../UI/menuButton/MenuButton';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../store/hooks';
 import { setModal, toggleModal } from '../../../store/modalSlice';
+import { continueGame, quitGame, restartGame } from '../../../store/gameSlice';
 
 const GameMenuContext: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -18,9 +19,16 @@ const GameMenuContext: React.FC = () => {
   const quitGameHandler = () => {
     navigate('/');
     dispatch(setModal(false));
+    dispatch(quitGame());
   };
   const continueHandler = () => {
     dispatch(toggleModal());
+    dispatch(continueGame());
+  };
+
+  const restartHandler = () => {
+    dispatch(toggleModal());
+    dispatch(restartGame());
   };
 
   return (
@@ -30,7 +38,7 @@ const GameMenuContext: React.FC = () => {
         <MenuButton bgColor="white" textcolor="black" onClick={continueHandler}>
           <GameMenuBtnText>continue game</GameMenuBtnText>
         </MenuButton>
-        <MenuButton bgColor="white" textcolor="black">
+        <MenuButton bgColor="white" textcolor="black" onClick={restartHandler}>
           <GameMenuBtnText>restart</GameMenuBtnText>
         </MenuButton>
         <MenuButton bgColor="red" textcolor="white" onClick={quitGameHandler}>

@@ -19,6 +19,7 @@ export const WinneroWrapper = styled.div`
 export const WinnerName = styled.h4`
   font-size: var(--font-size-heading-xs);
   line-height: var(--font-line-heading-xs);
+  font-weight: bold;
   text-transform: uppercase;
 `;
 export const WinnerText = styled.h2`
