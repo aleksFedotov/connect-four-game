@@ -25,6 +25,7 @@ type inintialStateType = {
   currentPlayer: string;
   isGamePaused: boolean;
   starterColor: string;
+  isTimeForNextTurn: boolean;
 };
 
 const initialState: inintialStateType = {
@@ -47,6 +48,7 @@ const initialState: inintialStateType = {
   currentPlayer: 'p1',
   isGamePaused: false,
   starterColor: 'red',
+  isTimeForNextTurn: true,
 };
 
 const gameSlice = createSlice({
@@ -123,6 +125,9 @@ const gameSlice = createSlice({
     continueGame(state) {
       state.isGamePaused = false;
     },
+    setIsTimeToNextTurn(state, action: PayloadAction<boolean>) {
+      state.isTimeForNextTurn = action.payload;
+    },
   },
 });
 
@@ -137,6 +142,7 @@ export const {
   continueGame,
   restartGame,
   quitGame,
+  setIsTimeToNextTurn,
 } = gameSlice.actions;
 export const selectGameIsRunning = (state: RootState) =>
   state.game.gameIsRunning;
@@ -161,11 +167,16 @@ export const makeMove = (col: number) => {
     const { game } = getState();
     const gameBoard = game.gameBoard;
 
-    if (gameBoard[0][col].color || game.winner) return;
+    if (gameBoard[0][col].color || game.winner || !game.isTimeForNextTurn)
+      return;
+    dispatch(setIsTimeToNextTurn(false));
     dispatch(placeCounter(col));
     // checkforwin
     dispatch(checkForWinner(col));
 
     dispatch(changeTurn());
+    setTimeout(() => {
+      dispatch(setIsTimeToNextTurn(true));
+    }, 800);
   };
 };
