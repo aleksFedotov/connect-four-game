@@ -5,7 +5,6 @@ export const getCounter = (
   col: number,
   gameGrid: counter[][]
 ): counter => {
-  if (!gameGrid[row] || !gameGrid[row][col])
-    return { color: null, isWinning: false };
+  if (!gameGrid[row] || !gameGrid[row][col]) return null;
   return gameGrid[row][col];
 };

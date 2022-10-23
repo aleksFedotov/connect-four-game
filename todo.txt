@@ -1,3 +1,2 @@
-gameHeader - logo not in center
-layout not always 100%
+tie
 get rud of isGamePage

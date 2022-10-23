@@ -1,6 +1,5 @@
 import React from 'react';
 import { CounterElement, WhiteCircle } from './CounterStyles';
-import { whiteCircleVariants } from '../../../frameMotinVariats/frameMotionVariants';
 
 const Counter: React.FC<{ bg: string; row: number; isWin: boolean }> = ({
   bg,
@@ -23,11 +22,6 @@ const Counter: React.FC<{ bg: string; row: number; isWin: boolean }> = ({
             duration: 0.6,
             times: [0, 0.5, 1],
           }}
-          // @ts-ignore
-          // variants={whiteCircleVariants}
-          // initial="hidden"
-          // animate="visible"
-          // exit="exit"
         />
       )}
     </CounterElement>

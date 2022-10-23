@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { media } from '../../../styles/GlobalStyles';
 
 type props = {
-  bg?: string;
+  bg?: string | null;
 };
 
 export const CounterElement = styled(motion.div)<props>`
@@ -13,7 +13,7 @@ export const CounterElement = styled(motion.div)<props>`
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-image: ${({ bg }) => `url(${bg})`};
+  background-image: ${({ bg }) => bg && `url(${bg})`};
   background-repeat: no-repeat;
   background-size: cover;
 `;

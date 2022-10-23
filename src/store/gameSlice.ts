@@ -26,6 +26,9 @@ type inintialStateType = {
   isGamePaused: boolean;
   starterColor: string;
   isTimeForNextTurn: boolean;
+  winnigComb: {
+    [key: string]: boolean;
+  };
 };
 
 const initialState: inintialStateType = {
@@ -49,6 +52,7 @@ const initialState: inintialStateType = {
   isGamePaused: false,
   starterColor: 'red',
   isTimeForNextTurn: true,
+  winnigComb: {},
 };
 
 const gameSlice = createSlice({
@@ -66,7 +70,7 @@ const gameSlice = createSlice({
       const col = action.payload;
       const row = findRowToLandCounter(state.gameBoard, action.payload);
 
-      state.gameBoard[row][col] = { color: state.turn, isWinning: false };
+      state.gameBoard[row][col] = state.turn;
     },
     changeTurn(state) {
       state.turn = state.turn === 'red' ? 'yellow' : 'red';
@@ -86,7 +90,7 @@ const gameSlice = createSlice({
         state.winner = state.p1.color === color ? 'p1' : 'p2';
         state[state.winner].score++;
         segments.forEach(
-          (seg) => (state.gameBoard[seg[0]][seg[1]].isWinning = true)
+          (seg) => (state.winnigComb[`${seg[0]}${seg[1]}`] = true)
         );
         state.isGamePaused = true;
       }
@@ -99,6 +103,7 @@ const gameSlice = createSlice({
       state.gameBoard = createGrid();
       state.timer = 30;
       state.isGamePaused = false;
+      state.winnigComb = {};
 
       state.turn = state.starterColor === 'red' ? 'yellow' : 'red';
       state.starterColor = state.starterColor === 'red' ? 'yellow' : 'red';
@@ -110,6 +115,7 @@ const gameSlice = createSlice({
       state.gameBoard = createGrid();
       state.timer = 30;
       state.isGamePaused = false;
+      state.winnigComb = {};
 
       state.turn = state.starterColor;
 
@@ -153,6 +159,8 @@ export const selectGameBoard = (state: RootState) => state.game.gameBoard;
 export const selectWinner = (state: RootState) => state.game.winner;
 export const selectGameMode = (state: RootState) => state.game.gameMode;
 export const selectTimer = (state: RootState) => state.game.timer;
+export const selectWinnigCombination = (state: RootState) =>
+  state.game.winnigComb;
 export const selectIsGamePaused = (state: RootState) => state.game.isGamePaused;
 export const selectCurrentPlayer = (state: RootState) =>
   state.game.currentPlayer;
@@ -167,8 +175,7 @@ export const makeMove = (col: number) => {
     const { game } = getState();
     const gameBoard = game.gameBoard;
 
-    if (gameBoard[0][col].color || game.winner || !game.isTimeForNextTurn)
-      return;
+    if (gameBoard[0][col] || game.winner || !game.isTimeForNextTurn) return;
     dispatch(setIsTimeToNextTurn(false));
     dispatch(placeCounter(col));
     // checkforwin

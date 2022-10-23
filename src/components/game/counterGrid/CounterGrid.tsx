@@ -8,6 +8,9 @@ import CounterRedSmall from '../../../assets/images/counter-red-small.svg';
 import CounterYellowSmall from '../../../assets/images/counter-yellow-small.svg';
 import { counter } from '../../../helpers/createGrid';
 import Counter from '../../UI/counter/Counter';
+import { useAppSelector } from '../../../store/hooks';
+import { selectWinnigCombination } from '../../../store/gameSlice';
+import { join } from 'node:path/posix';
 
 type countersType = {
   [key: string]: {
@@ -28,21 +31,23 @@ const counters: countersType = {
 
 const CounterGrid: React.FC<{ grid: counter[][] }> = ({ grid }) => {
   const windowWidth = useWindowWidth();
+  const winningCobination = useAppSelector(selectWinnigCombination);
 
   const size = windowWidth > 760 ? 'large' : 'small';
+
   return (
     <GameGrid>
       {grid.map((row, i) =>
         row.map((counter, j) => (
           <GridCell key={`${i}${j}`}>
-            {counter.color && (
+            {counter && (
               <Counter
                 // @ts-ignore
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 4 }}
-                bg={counters[counter.color][size]}
-                isWin={counter.isWinning}
+                bg={counter && counters[counter][size]}
+                isWin={winningCobination[`${i}${j}`]}
                 row={i}
               />
             )}

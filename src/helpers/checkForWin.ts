@@ -31,10 +31,10 @@ const getWinner = (
     return getCounter(row, col, gameGrid);
   });
 
-  const color = counters[0].color;
+  const color = counters[0];
 
   if (!color) return false;
-  if (counters.every((c) => c.color === color)) {
+  if (counters.every((c) => c === color)) {
     return { color, segments };
   }
 
