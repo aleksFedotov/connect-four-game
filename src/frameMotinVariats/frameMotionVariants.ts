@@ -177,3 +177,13 @@ export const whiteCircleVariants = {
     transition: { delay: 0.3, duration: 0.5 },
   },
 };
+
+export const difficultyVariants = {
+  hidden: {
+    scale: 0,
+  },
+  visible: {
+    scale: 1,
+    transition: { delay: 0.7, duration: 0.5 },
+  },
+};

@@ -1,2 +1,3 @@
 tie
+slow on hard level
 get rud of isGamePage

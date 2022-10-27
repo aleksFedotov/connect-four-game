@@ -153,6 +153,7 @@ export const {
   restartGame,
   quitGame,
   setIsTimeToNextTurn,
+  setCPULevel,
 } = gameSlice.actions;
 export const selectGameIsRunning = (state: RootState) =>
   state.game.gameIsRunning;

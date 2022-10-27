@@ -1,18 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
+type initialStateType = {
+  isModalOpened: {
+    [key: string]: boolean;
+    gameMenu: boolean;
+    mainMenu: boolean;
+  };
+};
+
+const initialState: initialStateType = {
+  isModalOpened: {
+    gameMenu: false,
+    mainMenu: false,
+  },
+};
+
 const modalSlice = createSlice({
   name: 'modal',
-  initialState: {
-    isModalOpened: false,
-  },
+  initialState,
   reducers: {
-    toggleModal(state) {
-      state.isModalOpened = !state.isModalOpened;
+    toggleModal(state, action: PayloadAction<string>) {
+      state.isModalOpened[action.payload] =
+        !state.isModalOpened[action.payload];
     },
 
-    setModal(state, action: PayloadAction<boolean>) {
-      state.isModalOpened = action.payload;
+    setModal(state, action: PayloadAction<{ modal: string; status: boolean }>) {
+      state.isModalOpened[action.payload.modal] = action.payload.status;
     },
   },
 });

@@ -9,6 +9,7 @@ import GameMenuContext from './components/game/gameMenuContext/GameMenuContext';
 import { useAppSelector } from './store/hooks';
 import { selectIsModalOpened } from './store/modalSlice';
 import { selectGameIsRunning } from './store/gameSlice';
+import DifficaltyGameModalContent from './components/UI/difficultyModalContent/DifficultyGameModalContent';
 
 function App() {
   const location = useLocation();
@@ -29,11 +30,16 @@ function App() {
         </Routes>
       </AnimatePresence>
       <AnimatePresence>
-        {isOpenModal && (
-          <Modal key="modal">
+        {isOpenModal.gameMenu && (
+          <Modal key="gameMenuModal">
             <MenuWrapper type="gameMenu">
               <GameMenuContext />
             </MenuWrapper>
+          </Modal>
+        )}
+        {isOpenModal.mainMenu && (
+          <Modal key="mainMenuModal">
+            <DifficaltyGameModalContent />
           </Modal>
         )}
       </AnimatePresence>

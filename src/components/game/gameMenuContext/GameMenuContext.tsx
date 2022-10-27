@@ -18,16 +18,16 @@ const GameMenuContext: React.FC = () => {
 
   const quitGameHandler = () => {
     navigate('/');
-    dispatch(setModal(false));
+    dispatch(setModal({ modal: 'gameMenu', status: false }));
     dispatch(quitGame());
   };
   const continueHandler = () => {
-    dispatch(toggleModal());
+    dispatch(toggleModal('gameMenu'));
     dispatch(continueGame());
   };
 
   const restartHandler = () => {
-    dispatch(toggleModal());
+    dispatch(toggleModal('gameMenu'));
     dispatch(restartGame());
   };
 

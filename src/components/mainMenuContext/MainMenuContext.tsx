@@ -13,6 +13,7 @@ import { ReactComponent as PVPMode } from '../../assets/images/player-vs-player.
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store/hooks';
 import { startGame } from '../../store/gameSlice';
+import { toggleModal } from '../../store/modalSlice';
 
 const MainMenuContext: React.FC = () => {
   const navigate = useNavigate();
@@ -22,38 +23,26 @@ const MainMenuContext: React.FC = () => {
     navigate('/rules');
   };
 
-  // Delete -----------------------------------------
-
-  const mainMenuClickHandler = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    const mode = e.currentTarget.getAttribute('data-gamemode');
-    dispatch(startGame(mode || 'CPUvP'));
+  const PvPhandler = () => {
+    dispatch(startGame('PvP'));
     navigate('/game');
   };
 
-  // -------------------------------------------
+  const CPUvPHandler = () => {
+    dispatch(toggleModal('mainMenu'));
+  };
+
   return (
     <MenuCtxWrapper>
       <Logo />
       <ButtonsWrapper>
-        <MenuButton
-          bgColor="red"
-          textcolor="white"
-          onClick={mainMenuClickHandler}
-          data-gamemode="CPUvP"
-        >
+        <MenuButton bgColor="red" textcolor="white" onClick={CPUvPHandler}>
           <ButtonCtxWrapper>
             <BtnText>player vs cpu</BtnText>
             <CPUMode />
           </ButtonCtxWrapper>
         </MenuButton>
-        <MenuButton
-          bgColor="yellow"
-          textcolor="black"
-          onClick={mainMenuClickHandler}
-          data-gamemode="PvP"
-        >
+        <MenuButton bgColor="yellow" textcolor="black" onClick={PvPhandler}>
           <ButtonCtxWrapper>
             <BtnText>play vs player</BtnText>
             <PVPMode />

@@ -13,7 +13,7 @@ const GamePageHeader: React.FC = () => {
 
   const menuHandler = () => {
     dispatch(pauseGame());
-    dispatch(toggleModal());
+    dispatch(toggleModal('gameMenu'));
   };
 
   const restartHandler = () => {
