@@ -41,7 +41,6 @@ const Timer: React.FC = () => {
   useEffect(() => {
     if (isGamePaused) return;
     const timeout = setTimeout(function () {
-      console.log('minus: ', timer);
       const newTime = timer - 1;
       dispatch(updateTimer(newTime));
       if (newTime <= 0) {

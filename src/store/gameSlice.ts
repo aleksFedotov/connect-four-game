@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { createGrid } from '../helpers/createGrid';
+import { createGrid } from '../helpers/helpers';
 import { findRowToLandCounter } from '../helpers/findRowToLandCounter';
-import { counter } from '../helpers/createGrid';
+import { counter } from '../helpers/helpers';
 import { store } from './store';
 import { checkForWin } from '../helpers/checkForWin';
 
@@ -26,6 +26,7 @@ type inintialStateType = {
   isGamePaused: boolean;
   starterColor: string;
   isTimeForNextTurn: boolean;
+  CPULevel: number;
   winnigComb: {
     [key: string]: boolean;
   };
@@ -53,6 +54,7 @@ const initialState: inintialStateType = {
   starterColor: 'red',
   isTimeForNextTurn: true,
   winnigComb: {},
+  CPULevel: 4,
 };
 
 const gameSlice = createSlice({
@@ -83,11 +85,10 @@ const gameSlice = createSlice({
       const col = action.payload;
       const row = findRowToLandCounter(state.gameBoard, action.payload) + 1;
 
-      const winner = checkForWin(row, col, gameBoard);
-
-      if (typeof winner !== 'boolean') {
-        const { color, segments } = winner;
-        state.winner = state.p1.color === color ? 'p1' : 'p2';
+      const winnerComb = checkForWin(row, col, gameBoard, state.turn);
+      if (typeof winnerComb !== 'boolean' && winnerComb.winner) {
+        const { winner, segments } = winnerComb;
+        state.winner = state.p1.color === winner ? 'p1' : 'p2';
         state[state.winner].score++;
         segments.forEach(
           (seg) => (state.winnigComb[`${seg[0]}${seg[1]}`] = true)
@@ -134,6 +135,9 @@ const gameSlice = createSlice({
     setIsTimeToNextTurn(state, action: PayloadAction<boolean>) {
       state.isTimeForNextTurn = action.payload;
     },
+    setCPULevel(state, action: PayloadAction<number>) {
+      state.CPULevel = action.payload;
+    },
   },
 });
 
@@ -159,6 +163,8 @@ export const selectGameBoard = (state: RootState) => state.game.gameBoard;
 export const selectWinner = (state: RootState) => state.game.winner;
 export const selectGameMode = (state: RootState) => state.game.gameMode;
 export const selectTimer = (state: RootState) => state.game.timer;
+export const selectIsTimeForNextTurn = (state: RootState) =>
+  state.game.isTimeForNextTurn;
 export const selectWinnigCombination = (state: RootState) =>
   state.game.winnigComb;
 export const selectIsGamePaused = (state: RootState) => state.game.isGamePaused;
@@ -168,22 +174,25 @@ export const selectCurrentPlayer = (state: RootState) =>
 export const gameReducer = gameSlice.reducer;
 
 export const makeMove = (col: number) => {
-  return async (
+  return (
     dispatch: typeof store.dispatch,
     getState: typeof store.getState
-  ) => {
+  ): boolean => {
     const { game } = getState();
     const gameBoard = game.gameBoard;
 
-    if (gameBoard[0][col] || game.winner || !game.isTimeForNextTurn) return;
+    if (gameBoard[0][col] || game.winner || !game.isTimeForNextTurn)
+      return false;
     dispatch(setIsTimeToNextTurn(false));
     dispatch(placeCounter(col));
     // checkforwin
     dispatch(checkForWinner(col));
 
     dispatch(changeTurn());
+
     setTimeout(() => {
       dispatch(setIsTimeToNextTurn(true));
     }, 800);
+    return true;
   };
 };

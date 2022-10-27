@@ -1,4 +1,4 @@
-import { counter } from './createGrid';
+import { counter } from './helpers';
 
 const scorePosition = (
   row: number,
@@ -13,10 +13,10 @@ const scorePosition = (
 
   // Determine score through amount of available counters
 
-  for (var i = 0; i < 4; i++) {
+  for (let i = 0; i < 4; i++) {
     if (gameGrid[row][column] === 'red') {
       playerPoints++; // Add for each human chip
-    } else {
+    } else if (gameGrid[row][column] === 'yellow') {
       CPUPoints++; // Add for each computer chip
     }
 
@@ -140,5 +140,6 @@ export const boardScore = (
 
   points =
     horizontalPoints + verticalPoints + diagonalPoints1 + diagonalPoints2;
+
   return points;
 };

@@ -1,4 +1,4 @@
-import { counter } from './createGrid';
+import { counter } from './helpers';
 import { getCounter } from './helpers';
 
 type coordinates = {
@@ -11,7 +11,7 @@ type coordinates = {
 };
 
 type winComb = {
-  color: string;
+  winner: string | null;
   segments: number[][];
 };
 
@@ -23,7 +23,8 @@ const getWinner = (
   secondSegment: number[],
   thirdegment: number[],
   fourthSegment: number[],
-  gameGrid: counter[][]
+  gameGrid: counter[][],
+  turn: string
 ): boolean | winComb => {
   const segments = [firstSegment, secondSegment, thirdegment, fourthSegment];
   if (segments.length !== 4) return false;
@@ -34,8 +35,8 @@ const getWinner = (
   const color = counters[0];
 
   if (!color) return false;
-  if (counters.every((c) => c === color)) {
-    return { color, segments };
+  if (counters.every((c) => c === turn)) {
+    return { winner: turn, segments };
   }
 
   return false;
@@ -43,7 +44,8 @@ const getWinner = (
 
 const checkHorizontalSegments = (
   { focalRow, minCol, maxCol, focalCol }: coordinates,
-  gameGrid: counter[][]
+  gameGrid: counter[][],
+  turn: string
 ) => {
   for (let row = focalRow, col = minCol; col <= maxCol; col++) {
     const winner = getWinner(
@@ -51,7 +53,8 @@ const checkHorizontalSegments = (
       [row, col + 1],
       [row, col + 2],
       [row, col + 3],
-      gameGrid
+      gameGrid,
+      turn
     );
 
     if (winner) return winner;
@@ -61,7 +64,8 @@ const checkHorizontalSegments = (
 
 const checkVerticalSegments = (
   { focalRow, focalCol, minRow, maxRow }: coordinates,
-  gameGrid: counter[][]
+  gameGrid: counter[][],
+  turn: string
 ) => {
   for (let col = focalCol, row = minRow; row <= focalRow; row++) {
     const winner = getWinner(
@@ -69,7 +73,8 @@ const checkVerticalSegments = (
       [row + 1, col],
       [row + 2, col],
       [row + 3, col],
-      gameGrid
+      gameGrid,
+      turn
     );
     if (winner) return winner;
   }
@@ -78,7 +83,8 @@ const checkVerticalSegments = (
 
 const checkForwardSlashSegments = (
   { focalRow, focalCol, minRow, minCol, maxRow, maxCol }: coordinates,
-  gameGrid: counter[][]
+  gameGrid: counter[][],
+  turn: string
 ) => {
   const startForwardSlash = (row: number, col: number) => {
     while (row > minRow && col > minCol) {
@@ -98,7 +104,8 @@ const checkForwardSlashSegments = (
       [row + 1, col + 1],
       [row + 2, col + 2],
       [row + 3, col + 3],
-      gameGrid
+      gameGrid,
+      turn
     );
     if (winner) return winner;
   }
@@ -107,7 +114,8 @@ const checkForwardSlashSegments = (
 
 const checkBackwardSlashSegments = (
   { focalRow, focalCol, minRow, minCol, maxRow, maxCol }: coordinates,
-  gameGrid: counter[][]
+  gameGrid: counter[][],
+  turn: string
 ) => {
   const startBackwardSlash = (row: number, col: number) => {
     while (row < maxRow && col > minCol) {
@@ -126,7 +134,8 @@ const checkBackwardSlashSegments = (
       [row - 1, col + 1],
       [row - 2, col + 2],
       [row - 3, col + 3],
-      gameGrid
+      gameGrid,
+      turn
     );
     if (winner) return winner;
   }
@@ -136,7 +145,8 @@ const checkBackwardSlashSegments = (
 export const checkForWin = (
   focalRow: number,
   focalCol: number,
-  gameGrid: counter[][]
+  gameGrid: counter[][],
+  turn: string
 ) => {
   const minCol = min(focalCol);
   const maxCol = max(focalCol, 6);
@@ -152,9 +162,92 @@ export const checkForWin = (
   };
 
   return (
-    checkHorizontalSegments(coords, gameGrid) ||
-    checkVerticalSegments(coords, gameGrid) ||
-    checkForwardSlashSegments(coords, gameGrid) ||
-    checkBackwardSlashSegments(coords, gameGrid)
+    checkHorizontalSegments(coords, gameGrid, turn) ||
+    checkVerticalSegments(coords, gameGrid, turn) ||
+    checkForwardSlashSegments(coords, gameGrid, turn) ||
+    checkBackwardSlashSegments(coords, gameGrid, turn)
   );
 };
+
+// const checkForWin2 = (board: counter[][], turn: string): winComb => {
+//   //check horizontal wins
+//   for (let col = 0; col < 4; col++) {
+//     for (let row = 0; row < 6; row++) {
+//       if (
+//         board[row][col] === turn &&
+//         board[row][col + 1] === turn &&
+//         board[row][col + 2] === turn &&
+//         board[row][col + 3] === turn
+//       ) {
+//         const segments = [
+//           [row, col],
+//           [row, col + 1],
+//           [row, col + 2],
+//           [row, col + 3],
+//         ];
+//         return { winner: turn, segments };
+//       }
+//     }
+//   }
+
+//   //check vertical wins
+//   for (let col = 0; col < 7; col++) {
+//     for (let row = 0; row < 3; row++) {
+//       if (
+//         board[row][col] === turn &&
+//         board[row + 1][col] === turn &&
+//         board[row + 2][col] === turn &&
+//         board[row + 3][col] === turn
+//       ) {
+//         const segments = [
+//           [row, col],
+//           [row + 1, col],
+//           [row + 2, col],
+//           [row + 3, col],
+//         ];
+//         return { winner: turn, segments };
+//       }
+//     }
+//   }
+//   //check for upward diagonal wins
+//   for (let col = 0; col < 4; col++) {
+//     for (let row = 0; row < 3; row++) {
+//       if (
+//         board[row][col] === turn &&
+//         board[row + 1][col + 1] === turn &&
+//         board[row + 2][col + 2] === turn &&
+//         board[row + 3][col + 3] === turn
+//       ) {
+//         const segments = [
+//           [row, col],
+//           [row + 1, col + 1],
+//           [row + 2, col + 2],
+//           [row + 3, col + 3],
+//         ];
+//         return { winner: turn, segments };
+//       }
+//     }
+//   }
+
+//   //check for upward diagonal wins
+//   for (let col = 0; col < 4; col++) {
+//     for (let row = 3; row < 6; row++) {
+//       if (
+//         board[row][col] === turn &&
+//         board[row - 1][col + 1] === turn &&
+//         board[row - 2][col + 2] === turn &&
+//         board[row - 3][col + 3] === turn
+//       ) {
+//         const segments = [
+//           [row, col],
+//           [row - 1, col + 1],
+//           [row - 2, col + 2],
+//           [row - 3, col + 3],
+//         ];
+//         return { winner: turn, segments };
+//       }
+//     }
+//   }
+
+//   return { winner: null, segments: [] };
+// };

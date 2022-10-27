@@ -1,4 +1,4 @@
-import { counter } from './createGrid';
+import { counter } from './helpers';
 
 export const findRowToLandCounter = (
   grid: counter[][],

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import MainMenu from './pages/MainMenu';
 import Rules from './pages/Rules';

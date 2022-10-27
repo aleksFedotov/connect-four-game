@@ -6,11 +6,10 @@ import CounterRedLarge from '../../../assets/images/counter-red-large.svg';
 import CounterYellowLarge from '../../../assets/images/counter-yellow-large.svg';
 import CounterRedSmall from '../../../assets/images/counter-red-small.svg';
 import CounterYellowSmall from '../../../assets/images/counter-yellow-small.svg';
-import { counter } from '../../../helpers/createGrid';
+import { counter } from '../../../helpers/helpers';
 import Counter from '../../UI/counter/Counter';
 import { useAppSelector } from '../../../store/hooks';
 import { selectWinnigCombination } from '../../../store/gameSlice';
-import { join } from 'node:path/posix';
 
 type countersType = {
   [key: string]: {
