@@ -4,7 +4,7 @@ import { boardScore } from './boardScore';
 import { findRowToLandCounter } from './findRowToLandCounter';
 import { boardIsFull } from './helpers';
 
-function maximizePlay(
+export function maximizePlay(
   gameGrid: counter[][],
   depth: number,
   gameScore: number,
@@ -89,5 +89,3 @@ function minimizePlay(
 
   return min;
 }
-
-export default maximizePlay;

@@ -12,7 +12,7 @@ const Winner: React.FC = () => {
   const game = useSelector((state: RootState) => state.game);
   let name = '';
   let status = 'tie';
-  if (game.winner && game.winner !== ' tie') {
+  if (game.winner && game.winner !== 'tie') {
     name = game[game.winner].name;
 
     status = name === 'You' ? 'win' : 'wins';
@@ -23,7 +23,7 @@ const Winner: React.FC = () => {
   };
 
   return (
-    <WinneroWrapper>
+    <WinneroWrapper data-testid="winner">
       <WinnerName>{name}</WinnerName>
       <WinnerText>{status}</WinnerText>
       <SmallButton onClick={playAgainHandler}>Play Again</SmallButton>

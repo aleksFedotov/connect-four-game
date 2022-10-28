@@ -51,7 +51,7 @@ const PlayerInfo: React.FC<{ player: string }> = ({ player }) => {
       <PlayerName>{player === 'player1' ? p1.name : p2.name}</PlayerName>
 
       <Score>{player === 'player1' ? p1.score : p2.score}</Score>
-      <PalyerIcon />
+      <PalyerIcon data-testid="icon" />
     </PlayerInfoWrapper>
   );
 };

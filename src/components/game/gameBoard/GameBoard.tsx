@@ -7,7 +7,7 @@ import GameInfo from '../gameInfo/GameInfo';
 
 const GameBoard: React.FC = () => {
   return (
-    <GameBoardWrapper>
+    <GameBoardWrapper data-testid="gameBoard">
       <PlayerInfo player="player1" key={'left'} />
       <Board />
       <PlayerInfo player="player2" key={'rigth'} />

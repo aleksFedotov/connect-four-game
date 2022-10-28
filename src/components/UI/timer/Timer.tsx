@@ -36,27 +36,32 @@ const Timer: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const player =
-    game[currentPlayer].name === 'You' ? 'your' : game[currentPlayer].name;
+    game[currentPlayer].name === 'You'
+      ? 'your'
+      : `${game[currentPlayer].name}'s`;
 
   useEffect(() => {
     if (isGamePaused) return;
     const timeout = setTimeout(function () {
       const newTime = timer - 1;
       dispatch(updateTimer(newTime));
-      if (newTime <= 0) {
-        dispatch(changeTurn());
-      }
     }, 1000);
 
+    if (timer <= 0) {
+      dispatch(changeTurn());
+    }
     return () => {
-      // this should work flawlessly besides some milliseconds lost here and there
       clearTimeout(timeout);
     };
   }, [dispatch, timer, isGamePaused]);
 
   return (
-    <TimerWrapper bg={bgs[turn]} textcolor={textColor[turn]}>
-      <PlayerName>{player}'s turn</PlayerName>
+    <TimerWrapper
+      bg={bgs[turn]}
+      textcolor={textColor[turn]}
+      data-testid="timer"
+    >
+      <PlayerName>{player} turn</PlayerName>
       <Time>{timer}s</Time>
     </TimerWrapper>
   );

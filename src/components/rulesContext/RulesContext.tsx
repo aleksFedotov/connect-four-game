@@ -56,7 +56,7 @@ const RulesContext: React.FC = () => {
             </span>
           </RulesItem>
         </div>
-        <ButtonIcon onClick={clickHandler} />
+        <ButtonIcon onClick={clickHandler} data-testid="confirm-button" />
       </RulesTextWrapper>
     </RulesCtxWrapper>
   );

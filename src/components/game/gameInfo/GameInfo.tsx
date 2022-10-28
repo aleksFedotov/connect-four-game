@@ -15,6 +15,7 @@ const GameInfo: React.FC = () => {
       initial="hidden"
       animate="visible"
       exit="exit"
+      data-testid="gameInfo"
     >
       {winner ? <Winner /> : <Timer />}
     </GameInfoWrapper>

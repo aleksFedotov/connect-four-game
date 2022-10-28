@@ -14,9 +14,11 @@ const Counter: React.FC<{ bg: string; row: number; isWin: boolean }> = ({
         duration: 0.6,
         times: [0, 0.4, 0.6, 0.7, 0.8, 1],
       }}
+      data-testid="counter"
     >
       {isWin && (
         <WhiteCircle
+          data-testid="winnigCounter"
           animate={{ scale: [0, 1.5, 1] }}
           transition={{
             duration: 0.6,

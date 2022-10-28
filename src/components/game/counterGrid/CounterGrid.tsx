@@ -35,10 +35,10 @@ const CounterGrid: React.FC<{ grid: counter[][] }> = ({ grid }) => {
   const size = windowWidth > 760 ? 'large' : 'small';
 
   return (
-    <GameGrid>
+    <GameGrid data-testid="counterGrid">
       {grid.map((row, i) =>
         row.map((counter, j) => (
-          <GridCell key={`${i}${j}`}>
+          <GridCell key={`${i}${j}`} data-testid={counter || 'empty'}>
             {counter && (
               <Counter
                 // @ts-ignore

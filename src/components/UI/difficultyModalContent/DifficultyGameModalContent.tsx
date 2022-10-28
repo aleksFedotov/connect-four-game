@@ -19,13 +19,12 @@ const DifficaltyGameModalContent = () => {
   const selectDifficultyHandler = (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>
   ) => {
-    const difficultyLevel = e.currentTarget.getAttribute('data-difficulty');
-    if (difficultyLevel !== null) {
-      dispatch(setCPULevel(+difficultyLevel));
-      dispatch(setModal({ modal: 'mainMenu', status: false }));
-      dispatch(startGame('CPUvP'));
-      navigate('/game');
-    }
+    const difficultyLevel = e.currentTarget.getAttribute('data-difficulty')!;
+
+    dispatch(setCPULevel(+difficultyLevel || 2));
+    dispatch(setModal({ modal: 'mainMenu', status: false }));
+    dispatch(startGame('CPUvP'));
+    navigate('/game');
   };
   return (
     <DifficultyWrapper
@@ -37,7 +36,7 @@ const DifficaltyGameModalContent = () => {
       <Header>Select difficulty</Header>
       <DifficultyList>
         <DifficultyItem data-difficulty="2" onClick={selectDifficultyHandler}>
-          ease
+          easy
         </DifficultyItem>
         <DifficultyItem data-difficulty="4" onClick={selectDifficultyHandler}>
           normal

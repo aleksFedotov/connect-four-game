@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 import { ReactComponent as PointerRed } from '../../../assets/images/marker-red.svg';
 import { ReactComponent as PointerYellow } from '../../../assets/images/marker-yellow.svg';
-import maximizePlay from '../../../helpers/aiMove';
+import { maximizePlay } from '../../../helpers/aiMove';
 import { RootState } from '../../../store/store';
 
 const columns = Array(7).fill(null);
@@ -22,13 +22,13 @@ const ControlGrid: React.FC = () => {
 
   useEffect(() => {
     let aiMove: [null | number, number];
-    if (turn === 'yellow' && p2.name === 'CPU') {
-      aiMove = maximizePlay(gameBoard, CPULevel, Infinity);
-    }
 
     const timer = setTimeout(() => {
-      if (typeof aiMove !== 'undefined' && aiMove[0] !== null) {
-        dispatch(makeMove(aiMove[0]));
+      if (turn === 'yellow' && p2.name === 'CPU') {
+        aiMove = maximizePlay(gameBoard, CPULevel, Infinity);
+        if (typeof aiMove !== 'undefined' && aiMove[0] !== null) {
+          dispatch(makeMove(aiMove[0]));
+        }
       }
     }, 800);
 
@@ -55,10 +55,10 @@ const ControlGrid: React.FC = () => {
 
   const PointerIcon = turn === 'red' ? PointerRed : PointerYellow;
   return (
-    <Control>
+    <Control data-testid="control">
       <PointerWrapper>
-        <Pointer columnnumber={columnNumber}>
-          <PointerIcon />
+        <Pointer columnnumber={columnNumber} data-testid="pointer">
+          <PointerIcon data-testid={`color-${turn}`} />
         </Pointer>
       </PointerWrapper>
       {columns.map((_, ind) => {
@@ -68,6 +68,7 @@ const ControlGrid: React.FC = () => {
             data-columnnum={ind}
             onMouseEnter={mouseHoverHandler}
             onClick={columnClickHandler}
+            data-testid={`column${ind}`}
           />
         );
       })}

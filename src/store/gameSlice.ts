@@ -138,6 +138,9 @@ const gameSlice = createSlice({
     setCPULevel(state, action: PayloadAction<number>) {
       state.CPULevel = action.payload;
     },
+    setWinner(state, action: PayloadAction<string>) {
+      state.winner = action.payload;
+    },
   },
 });
 
@@ -154,6 +157,7 @@ export const {
   quitGame,
   setIsTimeToNextTurn,
   setCPULevel,
+  setWinner,
 } = gameSlice.actions;
 export const selectGameIsRunning = (state: RootState) =>
   state.game.gameIsRunning;

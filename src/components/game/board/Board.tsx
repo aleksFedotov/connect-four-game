@@ -27,18 +27,19 @@ const Board: React.FC = () => {
       initial="hidden"
       animate="visible"
       exit="exit"
+      data-testid="board"
     >
       {windowWidth > 760 ? (
-        <WhiteLayoutLarge className="white" />
+        <WhiteLayoutLarge className="white" data-testid="largeWhite" />
       ) : (
-        <WhiteLayoutSmall className="white" />
+        <WhiteLayoutSmall className="white" data-testid="smallWhite" />
       )}
       <ControlGrid />
       <CounterGrid grid={gameBoard} />
       {windowWidth > 760 ? (
-        <BlackLayoutLarge className="black" />
+        <BlackLayoutLarge className="black" data-testid="largeBlack" />
       ) : (
-        <BlackLayoutSmall className="black" />
+        <BlackLayoutSmall className="black" data-testid="smallBlack" />
       )}
     </BoardWrapper>
   );
