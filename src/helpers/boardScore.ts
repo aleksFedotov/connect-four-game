@@ -1,6 +1,6 @@
 import { counter } from './helpers';
 
-const scorePosition = (
+export const scorePosition = (
   row: number,
   column: number,
   deltaY: number,
