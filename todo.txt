@@ -1,3 +1,0 @@
-tie
-timer doesnt work during move computattion
-get rud of isGamePage

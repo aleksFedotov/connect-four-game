@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { createGrid } from '../helpers/helpers';
+import { boardIsFull, createGrid } from '../helpers/helpers';
 import { findRowToLandCounter } from '../helpers/findRowToLandCounter';
 import { counter } from '../helpers/helpers';
 import { store } from './store';
@@ -195,9 +195,13 @@ export const makeMove = (col: number) => {
 
     dispatch(changeTurn());
 
+    if (boardIsFull(gameBoard)) {
+      dispatch(setWinner('tie'));
+    }
+
     setTimeout(() => {
       dispatch(setIsTimeToNextTurn(true));
-    }, 800);
+    }, 400);
     return true;
   };
 };

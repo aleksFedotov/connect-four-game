@@ -24,8 +24,8 @@ const Winner: React.FC = () => {
 
   return (
     <WinneroWrapper data-testid="winner">
-      <WinnerName>{name}</WinnerName>
-      <WinnerText>{status}</WinnerText>
+      <WinnerName data-testid="winner-name">{name}</WinnerName>
+      <WinnerText data-testid="game-status">{status}</WinnerText>
       <SmallButton onClick={playAgainHandler}>Play Again</SmallButton>
     </WinneroWrapper>
   );

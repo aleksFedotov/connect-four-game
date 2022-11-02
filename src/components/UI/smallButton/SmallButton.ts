@@ -22,7 +22,8 @@ export const SmallButton = styled.button<props>`
   border: none;
   min-height: 3.9rem;
   max-height: 3.9rem;
-  width: 10rem;
+  width: fit-content;
+  min-width: 10rem;
 
   &:hover {
     background-color: var(--color-red);
