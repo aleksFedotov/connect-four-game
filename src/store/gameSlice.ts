@@ -141,6 +141,11 @@ const gameSlice = createSlice({
     setWinner(state, action: PayloadAction<string>) {
       state.winner = action.payload;
     },
+    checkForTie(state) {
+      if (boardIsFull(state.gameBoard)) {
+        state.winner = 'tie';
+      }
+    },
   },
 });
 
@@ -158,6 +163,7 @@ export const {
   setIsTimeToNextTurn,
   setCPULevel,
   setWinner,
+  checkForTie,
 } = gameSlice.actions;
 export const selectGameIsRunning = (state: RootState) =>
   state.game.gameIsRunning;
@@ -192,12 +198,8 @@ export const makeMove = (col: number) => {
     dispatch(placeCounter(col));
     // checkforwin
     dispatch(checkForWinner(col));
-
+    dispatch(checkForTie());
     dispatch(changeTurn());
-
-    if (boardIsFull(gameBoard)) {
-      dispatch(setWinner('tie'));
-    }
 
     setTimeout(() => {
       dispatch(setIsTimeToNextTurn(true));
