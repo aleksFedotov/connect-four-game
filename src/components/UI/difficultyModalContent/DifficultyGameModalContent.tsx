@@ -35,13 +35,13 @@ const DifficaltyGameModalContent = () => {
     >
       <Header>Select difficulty</Header>
       <DifficultyList>
-        <DifficultyItem data-difficulty="2" onClick={selectDifficultyHandler}>
+        <DifficultyItem data-difficulty="4" onClick={selectDifficultyHandler}>
           easy
         </DifficultyItem>
-        <DifficultyItem data-difficulty="4" onClick={selectDifficultyHandler}>
+        <DifficultyItem data-difficulty="6" onClick={selectDifficultyHandler}>
           normal
         </DifficultyItem>
-        <DifficultyItem data-difficulty="6" onClick={selectDifficultyHandler}>
+        <DifficultyItem data-difficulty="8" onClick={selectDifficultyHandler}>
           hard
         </DifficultyItem>
       </DifficultyList>

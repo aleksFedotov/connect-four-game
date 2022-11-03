@@ -5,6 +5,7 @@ import { findRowToLandCounter } from '../helpers/findRowToLandCounter';
 import { counter } from '../helpers/helpers';
 import { store } from './store';
 import { checkForWin } from '../helpers/checkForWin';
+import { maximizePlay } from '../helpers/aiMove';
 
 type player = {
   name: string;
@@ -205,5 +206,17 @@ export const makeMove = (col: number) => {
       dispatch(setIsTimeToNextTurn(true));
     }, 400);
     return true;
+  };
+};
+
+export const aiMove = () => {
+  return (dispatch: typeof store.dispatch, getState: typeof store.getState) => {
+    const { game } = getState();
+
+    let aiMove = maximizePlay(game.gameBoard, game.CPULevel, Infinity);
+
+    if (typeof aiMove !== 'undefined' && aiMove[0] !== null) {
+      dispatch(makeMove(aiMove[0]));
+    }
   };
 };

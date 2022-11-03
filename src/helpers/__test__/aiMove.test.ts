@@ -28,15 +28,15 @@ const grid3: counter[][] = [
 
 describe('aiMove testting', () => {
   test('should place counter in 0 column for grid 1', () => {
-    const move = maximizePlay(grid1, 2, 100000);
+    const move = maximizePlay(grid1, 2, 100000, 0);
     expect(move[0]).toBe(0);
   });
   test('should place counter in 5 column for grid 2', () => {
-    const move = maximizePlay(grid2, 2, 100000);
+    const move = maximizePlay(grid2, 2, 100000, 0);
     expect(move[0]).toBe(5);
   });
   test('should place counter in 5 column for grid 3', () => {
-    const move = maximizePlay(grid3, 2, 100000);
+    const move = maximizePlay(grid3, 2, 100000, 0);
     expect(move[0]).toBe(3);
   });
 });

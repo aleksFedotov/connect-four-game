@@ -8,12 +8,13 @@ export function maximizePlay(
   gameGrid: counter[][],
   depth: number,
   gameScore: number,
-  alpha = -Infinity,
-  beta = Infinity
+  alpha?: number,
+  beta?: number
 ): [null | number, number] {
   let gameColumns = 7;
 
   const score = boardScore(gameGrid, gameScore);
+  // console.log('max', iterations);
 
   if (
     depth === 0 ||
@@ -33,15 +34,23 @@ export function maximizePlay(
 
     if (!new_board[row][column]) {
       new_board[row][column] = 'yellow';
-      let next_move = minimizePlay(new_board, depth - 1, gameScore); // Recursive calling
+
+      let next_move = minimizePlay(
+        new_board,
+        depth - 1,
+        gameScore,
+        alpha,
+        beta
+      ); // Recursive calling
 
       // Evaluate new move
-      if (max[0] == null || next_move[1] > max[1]) {
+      if (max[0] === null || next_move[1] > max[1]) {
         max[0] = column;
         max[1] = next_move[1];
+
         alpha = next_move[1];
       }
-
+      // @ts-ignore
       if (alpha >= beta) return max;
     }
   }
@@ -53,12 +62,13 @@ export function minimizePlay(
   gameGrid: counter[][],
   depth: number,
   gameScore: number,
-  alpha = -Infinity,
-  beta = Infinity
+  alpha?: number,
+  beta?: number
 ): [null | number, number] {
   let gameColumns = 7;
 
   const score = boardScore(gameGrid, gameScore);
+  // console.log('min', iterations);
 
   if (
     depth === 0 ||
@@ -76,13 +86,22 @@ export function minimizePlay(
 
     if (!new_board[row][column]) {
       new_board[row][column] = 'red';
-      let next_move = maximizePlay(new_board, depth - 1, gameScore);
+
+      let next_move = maximizePlay(
+        new_board,
+        depth - 1,
+        gameScore,
+        alpha,
+        beta
+      );
 
       if (min[0] == null || next_move[1] < min[1]) {
         min[0] = column;
         min[1] = next_move[1];
+
         beta = next_move[1];
       }
+      // @ts-ignore
       if (alpha >= beta) return min;
     }
   }
