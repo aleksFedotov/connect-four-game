@@ -58,7 +58,7 @@ export function maximizePlay(
   return max;
 }
 
-export function minimizePlay(
+function minimizePlay(
   gameGrid: counter[][],
   depth: number,
   gameScore: number,

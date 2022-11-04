@@ -4,6 +4,7 @@ import { Control, Column, PointerWrapper, Pointer } from './ControlGridStlyes';
 import { useAppDispatch } from '../../../store/hooks';
 import { makeMove } from '../../../store/gameSlice';
 import { useSelector } from 'react-redux';
+import { createWorkerFactory, useWorker } from '@shopify/react-web-worker';
 
 import { ReactComponent as PointerRed } from '../../../assets/images/marker-red.svg';
 import { ReactComponent as PointerYellow } from '../../../assets/images/marker-yellow.svg';
@@ -12,10 +13,14 @@ import { RootState } from '../../../store/store';
 
 const columns = Array(7).fill(null);
 
+const createWorker = createWorkerFactory(
+  () => import('../../../helpers/aiMove')
+);
+
 const ControlGrid: React.FC = () => {
   const [columnNumber, setColumnNumber] = useState('0');
-  const aiWorker: Worker = new window.Worker('worker.js');
-  console.log(aiWorker);
+  const worker = useWorker(createWorker);
+  // const aiWorker: Worker = new Worker(new URL('./worker.ts', import.meta.url));
 
   const { turn, p2, isTimeForNextTurn, gameBoard, CPULevel } = useSelector(
     (state: RootState) => state.game
@@ -29,22 +34,18 @@ const ControlGrid: React.FC = () => {
       // timer = setTimeout(() => {
       //   // debug
       //   // let computationStart = new Date().getTime();
-
       //   dispatch(aiMove());
       //   // debug
       //   // let computationFinish = new Date().getTime() - computationStart;
       // }, 5000);
-
-      // @ts-ignore
-      aiWorker.onmessage({ gameBoard: gameBoard, cpulevel: CPULevel });
-      aiWorker.onerror = () => {
-        console.log('Error');
-      };
-
-      aiWorker.onmessage = (e: MessageEvent) => {
-        let aimove = e.data;
-        console.log(aimove);
-      };
+      (async () => {
+        let aiMove = await worker.maximizePlay(gameBoard, CPULevel, Infinity);
+        if (typeof aiMove !== 'undefined' && aiMove[0] !== null) {
+          // console.log(aiMove[0]);
+          dispatch(makeMove(aiMove[0]));
+        }
+      })();
+      console.log('sda');
     }
 
     // return () => clearTimeout(timer);
