@@ -4,23 +4,21 @@ import { Control, Column, PointerWrapper, Pointer } from './ControlGridStlyes';
 import { useAppDispatch } from '../../../store/hooks';
 import { makeMove } from '../../../store/gameSlice';
 import { useSelector } from 'react-redux';
-import { createWorkerFactory, useWorker } from '@shopify/react-web-worker';
+// import { createWorkerFactory, useWorker } from '@shopify/react-web-worker';
 
 import { ReactComponent as PointerRed } from '../../../assets/images/marker-red.svg';
 import { ReactComponent as PointerYellow } from '../../../assets/images/marker-yellow.svg';
 // import { maximizePlay } from '../../../helpers/aiMove';
+import { maximizePlay } from '../../../helpers/ai-worker';
 import { RootState } from '../../../store/store';
+
+import { useWorker } from '@koale/useworker';
 
 const columns = Array(7).fill(null);
 
-const createWorker = createWorkerFactory(
-  () => import('../../../helpers/aiMove')
-);
-
 const ControlGrid: React.FC = () => {
   const [columnNumber, setColumnNumber] = useState('0');
-  const worker = useWorker(createWorker);
-  // const aiWorker: Worker = new Worker(new URL('./worker.ts', import.meta.url));
+  const [worker] = useWorker(maximizePlay);
 
   const { turn, p2, isTimeForNextTurn, gameBoard, CPULevel } = useSelector(
     (state: RootState) => state.game
@@ -29,26 +27,15 @@ const ControlGrid: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // let timer: ReturnType<typeof setTimeout>;
     if (turn === 'yellow' && p2.name === 'CPU' && isTimeForNextTurn) {
-      // timer = setTimeout(() => {
-      //   // debug
-      //   // let computationStart = new Date().getTime();
-      //   dispatch(aiMove());
-      //   // debug
-      //   // let computationFinish = new Date().getTime() - computationStart;
-      // }, 5000);
       (async () => {
-        let aiMove = await worker.maximizePlay(gameBoard, CPULevel, Infinity);
-        if (typeof aiMove !== 'undefined' && aiMove[0] !== null) {
-          // console.log(aiMove[0]);
-          dispatch(makeMove(aiMove[0]));
+        const res = await worker(gameBoard, CPULevel, Infinity);
+
+        if (res && res[0] !== null) {
+          dispatch(makeMove(res[0]));
         }
       })();
-      console.log('sda');
     }
-
-    // return () => clearTimeout(timer);
   }, [p2, turn, dispatch, isTimeForNextTurn]);
 
   const mouseHoverHandler = (

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@koale/useworker": "^4.0.2",
     "@reduxjs/toolkit": "^1.8.6",
     "@shopify/react-web-worker": "^5.0.6",
     "@testing-library/jest-dom": "^5.16.5",
@@ -22,7 +23,9 @@
     "redux": "^4.2.0",
     "styled-components": "^5.3.6",
     "typescript": "^4.8.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "web-worker-hooks": "^0.5.1",
+    "workerize-loader": "^2.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

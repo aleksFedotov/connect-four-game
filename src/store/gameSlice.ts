@@ -213,6 +213,7 @@ export const aiMove = () => {
   return (dispatch: typeof store.dispatch, getState: typeof store.getState) => {
     const { game } = getState();
 
+    console.log('ads');
     let aiMove = maximizePlay(game.gameBoard, game.CPULevel, Infinity);
 
     if (typeof aiMove !== 'undefined' && aiMove[0] !== null) {
