@@ -44,13 +44,13 @@ describe('difficulty selection component', () => {
     const normal = screen.getByText('normal');
     fireEvent.click(normal);
     const difficultyLevel = store.getState().game.CPULevel;
-    expect(difficultyLevel).toBe(4);
+    expect(difficultyLevel).toBe(6);
   });
   test('should set difficulty to 6 after clicking on easy', () => {
     renderComponent();
     const hard = screen.getByText('hard');
     fireEvent.click(hard);
     const difficultyLevel = store.getState().game.CPULevel;
-    expect(difficultyLevel).toBe(6);
+    expect(difficultyLevel).toBe(8);
   });
 });

@@ -6,10 +6,13 @@ import CounterRedLarge from '../../../assets/images/counter-red-large.svg';
 import CounterYellowLarge from '../../../assets/images/counter-yellow-large.svg';
 import CounterRedSmall from '../../../assets/images/counter-red-small.svg';
 import CounterYellowSmall from '../../../assets/images/counter-yellow-small.svg';
-import { counter } from '../../../helpers/helpers';
+
 import Counter from '../../UI/counter/Counter';
 import { useAppSelector } from '../../../store/hooks';
-import { selectWinnigCombination } from '../../../store/gameSlice';
+import {
+  selectWinnigCombination,
+  selectGameBoard,
+} from '../../../store/gameSlice';
 
 type countersType = {
   [key: string]: {
@@ -28,15 +31,16 @@ const counters: countersType = {
   },
 };
 
-const CounterGrid: React.FC<{ grid: counter[][] }> = ({ grid }) => {
+const CounterGrid: React.FC = () => {
   const windowWidth = useWindowWidth();
   const winningCobination = useAppSelector(selectWinnigCombination);
+  const gameGrid = useAppSelector(selectGameBoard);
 
   const size = windowWidth > 760 ? 'large' : 'small';
 
   return (
     <GameGrid data-testid="counterGrid">
-      {grid.map((row, i) =>
+      {gameGrid.map((row, i) =>
         row.map((counter, j) => (
           <GridCell key={`${i}${j}`} data-testid={counter || 'empty'}>
             {counter && (

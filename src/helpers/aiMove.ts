@@ -14,7 +14,6 @@ export function maximizePlay(
   let gameColumns = 7;
 
   const score = boardScore(gameGrid, gameScore);
-  console.log('max');
 
   if (
     depth === 0 ||

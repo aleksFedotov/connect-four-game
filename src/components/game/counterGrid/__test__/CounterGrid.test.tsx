@@ -3,20 +3,16 @@ import { screen, render } from '@testing-library/react';
 import CounterGrid from '../CounterGrid';
 import { Provider } from 'react-redux';
 import { store } from '../../../../store/store';
-
-const testGrid = [
-  [null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, 'yellow'],
-  [null, null, null, null, null, null, 'yellow'],
-  [null, null, null, null, null, null, 'yellow'],
-  ['red', 'red', 'red', null, null, null, 'yellow'],
-];
+import {
+  changeTurn,
+  makeMove,
+  placeCounter,
+} from '../../../../store/gameSlice';
 
 const renderComponent = () => {
   return render(
     <Provider store={store}>
-      <CounterGrid grid={testGrid} />
+      <CounterGrid />
     </Provider>
   );
 };
@@ -28,11 +24,20 @@ describe('Counter grid component testing', () => {
     expect(counterGrid).toBeInTheDocument();
   });
   test('should render right amount of red counters', () => {
+    store.dispatch(placeCounter(0));
+    store.dispatch(placeCounter(1));
+    store.dispatch(placeCounter(2));
     renderComponent();
+
     const redCounters = screen.getAllByTestId('red');
     expect(redCounters).toHaveLength(3);
   });
   test('should render right amount of yellow counters', () => {
+    store.dispatch(changeTurn());
+    store.dispatch(placeCounter(6));
+    store.dispatch(placeCounter(6));
+    store.dispatch(placeCounter(6));
+    store.dispatch(placeCounter(6));
     renderComponent();
     const redCounters = screen.getAllByTestId('yellow');
     expect(redCounters).toHaveLength(4);

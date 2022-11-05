@@ -4,39 +4,52 @@ import { Control, Column, PointerWrapper, Pointer } from './ControlGridStlyes';
 import { useAppDispatch } from '../../../store/hooks';
 import { makeMove } from '../../../store/gameSlice';
 import { useSelector } from 'react-redux';
-// import { createWorkerFactory, useWorker } from '@shopify/react-web-worker';
 
 import { ReactComponent as PointerRed } from '../../../assets/images/marker-red.svg';
 import { ReactComponent as PointerYellow } from '../../../assets/images/marker-yellow.svg';
-// import { maximizePlay } from '../../../helpers/aiMove';
-import { maximizePlay } from '../../../helpers/ai-worker';
+
 import { RootState } from '../../../store/store';
 
-import { useWorker } from '@koale/useworker';
+import { wrap } from 'comlink';
 
 const columns = Array(7).fill(null);
+const worker = new Worker(
+  new URL('../../../helpers/worker.ts', import.meta.url),
+  { name: 'aiMoveWorker', type: 'module' }
+);
 
 const ControlGrid: React.FC = () => {
   const [columnNumber, setColumnNumber] = useState('0');
-  const [worker] = useWorker(maximizePlay);
 
   const { turn, p2, isTimeForNextTurn, gameBoard, CPULevel } = useSelector(
     (state: RootState) => state.game
   );
 
+  const { maximizePlay } =
+    wrap<import('../../../helpers/worker').AiMoveWorker>(worker);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log(turn);
     if (turn === 'yellow' && p2.name === 'CPU' && isTimeForNextTurn) {
       (async () => {
-        const res = await worker(gameBoard, CPULevel, Infinity);
+        const aiMove = await maximizePlay(gameBoard, CPULevel, Infinity);
 
-        if (res && res[0] !== null) {
-          dispatch(makeMove(res[0]));
+        if (aiMove && aiMove[0] !== null) {
+          dispatch(makeMove(aiMove[0]));
         }
       })();
     }
-  }, [p2, turn, dispatch, isTimeForNextTurn]);
+  }, [
+    p2,
+    turn,
+    dispatch,
+    isTimeForNextTurn,
+    CPULevel,
+    gameBoard,
+    maximizePlay,
+  ]);
 
   const mouseHoverHandler = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>

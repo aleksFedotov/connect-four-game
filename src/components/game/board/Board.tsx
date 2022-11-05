@@ -35,7 +35,7 @@ const Board: React.FC = () => {
         <WhiteLayoutSmall className="white" data-testid="smallWhite" />
       )}
       <ControlGrid />
-      <CounterGrid grid={gameBoard} />
+      <CounterGrid />
       {windowWidth > 760 ? (
         <BlackLayoutLarge className="black" data-testid="largeBlack" />
       ) : (

@@ -5,6 +5,6 @@ const worker = {
   maximizePlay,
 };
 
-export type AiMoveWorker = typeof Worker;
+export type AiMoveWorker = typeof worker;
 
 expose(worker);

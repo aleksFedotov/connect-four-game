@@ -35,7 +35,7 @@ const DifficaltyGameModalContent = () => {
     >
       <Header>Select difficulty</Header>
       <DifficultyList>
-        <DifficultyItem data-difficulty="1" onClick={selectDifficultyHandler}>
+        <DifficultyItem data-difficulty="2" onClick={selectDifficultyHandler}>
           easy
         </DifficultyItem>
         <DifficultyItem data-difficulty="6" onClick={selectDifficultyHandler}>

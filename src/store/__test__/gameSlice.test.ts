@@ -185,7 +185,7 @@ describe('GameSlice testing', () => {
     store.dispatch(makeMove(0));
 
     const storeState = store.getState().game;
-    console.log(storeState);
+
     expect(storeState.winner).toBe('p1');
     expect(JSON.stringify(storeState.winnigComb)).toBe(JSON.stringify(winComb));
     store.dispatch(quitGame());
