@@ -1,81 +1,72 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-import { Control, Column, PointerWrapper, Pointer } from './ControlGridStlyes';
-import { useAppDispatch } from '../../../store/hooks';
-import { makeMove } from '../../../store/gameSlice';
-import { useSelector } from 'react-redux';
+import { Control, Column } from './ControlGridStlyes';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import {
+  makeMove,
+  selectCurrentPlayer,
+  selectGameMode,
+  selectIsTimeForNextTurn,
+  setPointercolumn,
+} from '../../../store/gameSlice';
+// import { useSelector } from 'react-redux';
+import { aiMove } from '../../../store/aiMove';
+import GamePointer from '../../UI/pointer/Pointer';
 
-import { ReactComponent as PointerRed } from '../../../assets/images/marker-red.svg';
-import { ReactComponent as PointerYellow } from '../../../assets/images/marker-yellow.svg';
+// import { ReactComponent as PointerRed } from '../../../assets/images/marker-red.svg';
+// import { ReactComponent as PointerYellow } from '../../../assets/images/marker-yellow.svg';
 
-import { RootState } from '../../../store/store';
-
-import { wrap } from 'comlink';
+// import { wrap } from 'comlink';
 
 const columns = Array(7).fill(null);
-const worker = new Worker(
-  new URL('../../../helpers/worker.ts', import.meta.url),
-  { name: 'aiMoveWorker', type: 'module' }
-);
+// const worker = new Worker(
+//   new URL('../../../helpers/worker.ts', import.meta.url),
+//   { name: 'aiMoveWorker', type: 'module' }
+// );
 
 const ControlGrid: React.FC = () => {
-  const [columnNumber, setColumnNumber] = useState('0');
-
-  const { turn, p2, isTimeForNextTurn, gameBoard, CPULevel } = useSelector(
-    (state: RootState) => state.game
-  );
-
-  const { maximizePlay } =
-    wrap<import('../../../helpers/worker').AiMoveWorker>(worker);
+  // const [columnNumber, setColumnNumber] = useState('0');
+  // const turn = useAppSelector(selectTurn);
+  const isTimeForNextTurn = useAppSelector(selectIsTimeForNextTurn);
+  const gameMode = useAppSelector(selectGameMode);
+  const currentPlayer = useAppSelector(selectCurrentPlayer);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(turn);
-    if (turn === 'yellow' && p2.name === 'CPU' && isTimeForNextTurn) {
-      (async () => {
-        const aiMove = await maximizePlay(gameBoard, CPULevel, Infinity);
-
-        if (aiMove && aiMove[0] !== null) {
-          dispatch(makeMove(aiMove[0]));
-        }
-      })();
+    if (currentPlayer === 'p2' && gameMode === 'CPUvP' && isTimeForNextTurn) {
+      dispatch(aiMove());
     }
-  }, [
-    p2,
-    turn,
-    dispatch,
-    isTimeForNextTurn,
-    CPULevel,
-    gameBoard,
-    maximizePlay,
-  ]);
+  }, [dispatch, isTimeForNextTurn, currentPlayer, gameMode]);
 
   const mouseHoverHandler = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    setColumnNumber(e.currentTarget.getAttribute('data-columnnum') || '0');
+    dispatch(
+      setPointercolumn(e.currentTarget.getAttribute('data-columnnum') || '0')
+    );
   };
 
   const columnClickHandler = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    if (turn === 'yellow' && p2.name === 'CPU') return;
+    if (currentPlayer === 'p2' && gameMode === 'CPUvP') return;
     const col = e.currentTarget.getAttribute('data-columnnum');
     if (col) {
       dispatch(makeMove(+col));
     }
   };
 
-  const PointerIcon = turn === 'red' ? PointerRed : PointerYellow;
+  // const PointerIcon = turn === 'red' ? PointerRed : PointerYellow;
   return (
     <Control data-testid="control">
-      <PointerWrapper>
+      {/* <PointerWrapper>
         <Pointer columnnumber={columnNumber} data-testid="pointer">
           <PointerIcon data-testid={`color-${turn}`} />
         </Pointer>
-      </PointerWrapper>
+      </PointerWrapper> */}
+      <GamePointer />
       {columns.map((_, ind) => {
         return (
           <Column

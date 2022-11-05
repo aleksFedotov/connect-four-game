@@ -9,7 +9,7 @@ const Counter: React.FC<{ bg: string; row: number; isWin: boolean }> = ({
   return (
     <CounterElement
       bg={bg}
-      animate={{ y: [-(80 * row + 70), 0, -35, 0, -20, 0] }}
+      animate={{ y: [-(80 * row + 70), 0, -50, 0, -20, 0] }}
       transition={{
         duration: 0.4,
         times: [0, 0.4, 0.6, 0.7, 0.8, 1],

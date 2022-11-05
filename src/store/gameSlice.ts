@@ -5,7 +5,8 @@ import { findRowToLandCounter } from '../helpers/findRowToLandCounter';
 import { counter } from '../helpers/helpers';
 import { store } from './store';
 import { checkForWin } from '../helpers/checkForWin';
-import { maximizePlay } from '../helpers/aiMove';
+
+// import { wrap } from 'comlink';
 
 type player = {
   name: string;
@@ -31,6 +32,7 @@ type inintialStateType = {
   winnigComb: {
     [key: string]: boolean;
   };
+  pointerColumn: string;
 };
 
 const initialState: inintialStateType = {
@@ -56,6 +58,7 @@ const initialState: inintialStateType = {
   isTimeForNextTurn: true,
   winnigComb: {},
   CPULevel: 4,
+  pointerColumn: '0',
 };
 
 const gameSlice = createSlice({
@@ -147,6 +150,9 @@ const gameSlice = createSlice({
         state.winner = 'tie';
       }
     },
+    setPointercolumn(state, action: PayloadAction<string>) {
+      state.pointerColumn = action.payload;
+    },
   },
 });
 
@@ -165,6 +171,7 @@ export const {
   setCPULevel,
   setWinner,
   checkForTie,
+  setPointercolumn,
 } = gameSlice.actions;
 export const selectGameIsRunning = (state: RootState) =>
   state.game.gameIsRunning;
@@ -175,6 +182,8 @@ export const selectGameBoard = (state: RootState) => state.game.gameBoard;
 export const selectWinner = (state: RootState) => state.game.winner;
 export const selectGameMode = (state: RootState) => state.game.gameMode;
 export const selectTimer = (state: RootState) => state.game.timer;
+export const selectPointerColumn = (state: RootState) =>
+  state.game.pointerColumn;
 export const selectIsTimeForNextTurn = (state: RootState) =>
   state.game.isTimeForNextTurn;
 export const selectWinnigCombination = (state: RootState) =>
@@ -208,3 +217,25 @@ export const makeMove = (col: number) => {
     return true;
   };
 };
+
+// const worker = new Worker(new URL('../helpers/worker.ts', import.meta.url), {
+//   name: 'aiMoveWorker',
+//   type: 'module',
+// });
+
+// const { maximizePlay } = wrap<import('../helpers/worker').AiMoveWorker>(worker);
+
+// export const aiMove = () => {
+//   return async (
+//     dispatch: typeof store.dispatch,
+//     getState: typeof store.getState
+//   ) => {
+//     const { game } = getState();
+
+//     let aiMove = await maximizePlay(game.gameBoard, game.CPULevel, Infinity);
+
+//     if (typeof aiMove !== 'undefined' && aiMove[0] !== null) {
+//       dispatch(makeMove(aiMove[0]));
+//     }
+//   };
+// };

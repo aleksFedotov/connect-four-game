@@ -9,15 +9,11 @@ import { ReactComponent as BlackLayoutLarge } from '../../../assets/images/board
 import { ReactComponent as WhiteLayoutSmall } from '../../../assets/images/board-layer-white-small.svg';
 import { ReactComponent as BlackLayoutSmall } from '../../../assets/images/board-layer-black-small.svg';
 import { boardVariants } from '../../../frameMotinVariats/frameMotionVariants';
-import { useAppSelector } from '../../../store/hooks';
-import { selectGameBoard } from '../../../store/gameSlice';
 
 import CounterGrid from '../counterGrid/CounterGrid';
 import ControlGrid from '../controlGrid/ControlGrid';
 
 const Board: React.FC = () => {
-  const gameBoard = useAppSelector(selectGameBoard);
-
   const windowWidth = useWindowWidth();
 
   return (

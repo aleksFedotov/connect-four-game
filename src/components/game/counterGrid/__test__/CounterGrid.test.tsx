@@ -3,11 +3,7 @@ import { screen, render } from '@testing-library/react';
 import CounterGrid from '../CounterGrid';
 import { Provider } from 'react-redux';
 import { store } from '../../../../store/store';
-import {
-  changeTurn,
-  makeMove,
-  placeCounter,
-} from '../../../../store/gameSlice';
+import { changeTurn, placeCounter } from '../../../../store/gameSlice';
 
 const renderComponent = () => {
   return render(
