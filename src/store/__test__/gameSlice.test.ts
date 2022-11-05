@@ -78,7 +78,7 @@ describe('GameSlice testing', () => {
 
   test('placeCounter testing', () => {
     store.dispatch(startGame('PvP'));
-    store.dispatch(placeCounter(0));
+    store.dispatch(placeCounter({ col: 0, row: 5 }));
     const gameState = store.getState().game;
     expect(gameState.gameBoard[5][0]).toBe('red');
     store.dispatch(quitGame());
@@ -104,11 +104,11 @@ describe('GameSlice testing', () => {
 
   test('checkForWinner testing p1 wins', () => {
     store.dispatch(startGame('PvP'));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(checkForWinner(0));
+    store.dispatch(placeCounter({ col: 0, row: 5 }));
+    store.dispatch(placeCounter({ col: 0, row: 4 }));
+    store.dispatch(placeCounter({ col: 0, row: 3 }));
+    store.dispatch(placeCounter({ col: 0, row: 2 }));
+    store.dispatch(checkForWinner({ col: 0, row: 2 }));
 
     const gameState = store.getState().game;
 
@@ -121,11 +121,11 @@ describe('GameSlice testing', () => {
   test('checkForWinner testing p2 wins', () => {
     store.dispatch(startGame('PvP'));
     store.dispatch(changeTurn());
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(checkForWinner(0));
+    store.dispatch(placeCounter({ col: 0, row: 5 }));
+    store.dispatch(placeCounter({ col: 0, row: 4 }));
+    store.dispatch(placeCounter({ col: 0, row: 3 }));
+    store.dispatch(placeCounter({ col: 0, row: 2 }));
+    store.dispatch(checkForWinner({ col: 0, row: 2 }));
 
     const gameState = store.getState().game;
 
@@ -178,9 +178,9 @@ describe('GameSlice testing', () => {
   });
   test('makeMove testing should return true and set winner if there is a winner', () => {
     store.dispatch(startGame('PvP'));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
+    store.dispatch(placeCounter({ col: 0, row: 5 }));
+    store.dispatch(placeCounter({ col: 0, row: 4 }));
+    store.dispatch(placeCounter({ col: 0, row: 3 }));
 
     store.dispatch(makeMove(0));
 
@@ -192,12 +192,12 @@ describe('GameSlice testing', () => {
   });
   test('makeMove testing should return false if column is full', () => {
     store.dispatch(startGame('PvP'));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(0));
+    store.dispatch(placeCounter({ col: 0, row: 5 }));
+    store.dispatch(placeCounter({ col: 0, row: 4 }));
+    store.dispatch(placeCounter({ col: 0, row: 3 }));
+    store.dispatch(placeCounter({ col: 0, row: 2 }));
+    store.dispatch(placeCounter({ col: 0, row: 1 }));
+    store.dispatch(placeCounter({ col: 0, row: 0 }));
 
     const move = store.dispatch(makeMove(0));
 

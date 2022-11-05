@@ -20,9 +20,9 @@ describe('Counter grid component testing', () => {
     expect(counterGrid).toBeInTheDocument();
   });
   test('should render right amount of red counters', () => {
-    store.dispatch(placeCounter(0));
-    store.dispatch(placeCounter(1));
-    store.dispatch(placeCounter(2));
+    store.dispatch(placeCounter({ col: 0, row: 5 }));
+    store.dispatch(placeCounter({ col: 1, row: 5 }));
+    store.dispatch(placeCounter({ col: 2, row: 5 }));
     renderComponent();
 
     const redCounters = screen.getAllByTestId('red');
@@ -30,10 +30,10 @@ describe('Counter grid component testing', () => {
   });
   test('should render right amount of yellow counters', () => {
     store.dispatch(changeTurn());
-    store.dispatch(placeCounter(6));
-    store.dispatch(placeCounter(6));
-    store.dispatch(placeCounter(6));
-    store.dispatch(placeCounter(6));
+    store.dispatch(placeCounter({ col: 6, row: 5 }));
+    store.dispatch(placeCounter({ col: 6, row: 4 }));
+    store.dispatch(placeCounter({ col: 6, row: 3 }));
+    store.dispatch(placeCounter({ col: 6, row: 2 }));
     renderComponent();
     const redCounters = screen.getAllByTestId('yellow');
     expect(redCounters).toHaveLength(4);

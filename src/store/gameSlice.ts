@@ -72,9 +72,9 @@ const gameSlice = createSlice({
       state.currentPlayer = state.p1.color === state.turn ? 'p1' : 'p2';
       state.gameIsRunning = true;
     },
-    placeCounter(state, action: PayloadAction<number>) {
-      const col = action.payload;
-      const row = findRowToLandCounter(state.gameBoard, action.payload);
+    placeCounter(state, action: PayloadAction<{ col: number; row: number }>) {
+      const col = action.payload.col;
+      const row = action.payload.row;
 
       state.gameBoard[row][col] = state.turn;
     },
@@ -84,10 +84,10 @@ const gameSlice = createSlice({
       state.currentPlayer = state.p1.color === state.turn ? 'p1' : 'p2';
     },
 
-    checkForWinner(state, action: PayloadAction<number>) {
+    checkForWinner(state, action: PayloadAction<{ col: number; row: number }>) {
       const { gameBoard } = current(state);
-      const col = action.payload;
-      const row = findRowToLandCounter(state.gameBoard, action.payload) + 1;
+      const col = action.payload.col;
+      const row = action.payload.row;
 
       const winnerComb = checkForWin(row, col, gameBoard, state.turn);
       if (typeof winnerComb !== 'boolean' && winnerComb.winner) {
@@ -204,10 +204,12 @@ export const makeMove = (col: number) => {
 
     if (gameBoard[0][col] || game.winner || !game.isTimeForNextTurn)
       return false;
+
     dispatch(setIsTimeToNextTurn(false));
-    dispatch(placeCounter(col));
+    const row = findRowToLandCounter(gameBoard, col);
+    dispatch(placeCounter({ col, row }));
     // checkforwin
-    dispatch(checkForWinner(col));
+    dispatch(checkForWinner({ col, row }));
     dispatch(checkForTie());
     dispatch(changeTurn());
 
