@@ -13,6 +13,10 @@ const renderComponent = () => {
   );
 };
 
+jest.mock('../../../../helpers/getWorker.ts', () => ({
+  getWebWorker: jest.fn(),
+}));
+
 window.resizeTo = function resizeTo(width, height) {
   Object.assign(this, {
     innerWidth: width,
@@ -29,7 +33,7 @@ describe('board component testing', () => {
     expect(board).toBeInTheDocument();
   });
 
-  test('shoild render large layout on big screens', () => {
+  test('should render large layout on big screens', () => {
     renderComponent();
     const largeWhite = screen.getByTestId('largeWhite');
     const largeBlack = screen.getByTestId('largeBlack');

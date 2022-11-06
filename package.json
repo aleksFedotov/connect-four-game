@@ -3,13 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@koale/useworker": "^4.0.2",
     "@reduxjs/toolkit": "^1.8.6",
-    "@shopify/react-web-worker": "^5.0.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
     "@types/node": "^16.11.64",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
@@ -20,13 +17,10 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
-    "recoil": "^0.7.6",
     "redux": "^4.2.0",
     "styled-components": "^5.3.6",
     "typescript": "^4.8.4",
-    "web-vitals": "^2.1.4",
-    "web-worker-hooks": "^0.5.1",
-    "workerize-loader": "^2.0.2"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -56,9 +50,11 @@
   },
   "devDependencies": {
     "@testing-library/cypress": "^8.0.3",
+    "@types/jest": "^29.2.2",
     "@types/react-redux": "^7.1.24",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.26",
+    "codegen.macro": "^4.1.0",
     "cypress": "^10.11.0",
     "jest-svg-transformer": "^1.0.0"
   }

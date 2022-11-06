@@ -15,6 +15,10 @@ const renderComponent = () => {
   );
 };
 
+jest.mock('../src/helpers/getWorker.ts', () => ({
+  getWebWorker: jest.fn(),
+}));
+
 describe('app componnet testing', () => {
   test('should render main menu modal if it is opened', async () => {
     renderComponent();

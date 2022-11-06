@@ -2,12 +2,12 @@ import { store } from './store';
 import { wrap } from 'comlink';
 import { makeMove } from './gameSlice';
 
-const worker = new Worker(new URL('../helpers/worker.ts', import.meta.url), {
-  name: 'aiMoveWorker',
-  type: 'module',
-});
+import { getWebWorker } from '../helpers/getWorker';
 
-const { maximizePlay } = wrap<import('../helpers/worker').AiMoveWorker>(worker);
+const worker = getWebWorker();
+
+const { maximizePlay } =
+  wrap<import('../helpers/worker.js').AiMoveWorker>(worker);
 
 export const aiMove = () => {
   return async (

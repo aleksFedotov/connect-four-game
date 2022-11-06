@@ -46,6 +46,7 @@ const initialState = {
   isTimeForNextTurn: true,
   winnigComb: {},
   CPULevel: 4,
+  pointerColumn: '0',
 };
 
 describe('GameSlice testing', () => {
