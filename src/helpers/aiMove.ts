@@ -12,9 +12,13 @@ export function maximizePlay(
   beta?: number
 ): [null | number, number] {
   let gameColumns = 7;
-
+  //  check current board score for cpu
   const score = boardScore(gameGrid, gameScore);
-
+  // stop calculation if
+  // -we reached depth 0
+  //  gameScore is Infinity cpu wins
+  //  gameScore is -Infinity player wins
+  //  there is no more space
   if (
     depth === 0 ||
     score === gameScore ||
@@ -23,15 +27,16 @@ export function maximizePlay(
   )
     return [null, score];
 
-  // Column, Score
+  // current best Column, Score
   let max: [null | number, number] = [null, -Infinity];
 
   //   For all possible moves
   for (let column = 0; column < gameColumns; column++) {
     let new_board = copyBoard(gameGrid); // Create new board
     const row = findRowToLandCounter(new_board, column);
-
+    //  check if this place if empty
     if (!new_board[row][column]) {
+      // plave counter in empty position
       new_board[row][column] = 'yellow';
 
       let next_move = minimizePlay(
@@ -65,10 +70,13 @@ export function minimizePlay(
   beta?: number
 ): [null | number, number] {
   let gameColumns = 7;
-
+  //  check current board score for cpu
   const score = boardScore(gameGrid, gameScore);
-  // console.log('min', iterations);
-
+  // stop calculation if
+  // -we reached depth 0
+  //  gameScore is Infinity cpu wins
+  //  gameScore is -Infinity player wins
+  //  there is no more space
   if (
     depth === 0 ||
     score === gameScore ||
@@ -76,13 +84,15 @@ export function minimizePlay(
     boardIsFull(gameGrid)
   )
     return [null, score];
-
+  // current best Column, Score
   let min: [null | number, number] = [null, Infinity];
-
+  //   For all possible moves
   for (let column = 0; column < gameColumns; column++) {
+    // creating new board
     let new_board = copyBoard(gameGrid);
+    // findig row to place counter
     const row = findRowToLandCounter(new_board, column);
-
+    //  check if this place if empty
     if (!new_board[row][column]) {
       new_board[row][column] = 'red';
 
@@ -93,7 +103,7 @@ export function minimizePlay(
         alpha,
         beta
       );
-
+      // Evaluate new move
       if (min[0] == null || next_move[1] < min[1]) {
         min[0] = column;
         min[1] = next_move[1];

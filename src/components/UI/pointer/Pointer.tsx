@@ -10,7 +10,7 @@ import { ReactComponent as PointerYellow } from '../../../assets/images/marker-y
 const GamePointer: React.FC = () => {
   const columnNumber = useAppSelector(selectPointerColumn);
   const turn = useAppSelector(selectTurn);
-
+  // current turn defines color of pointer
   const PointerIcon = turn === 'red' ? PointerRed : PointerYellow;
   return (
     <PointerWrapper>

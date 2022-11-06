@@ -15,9 +15,11 @@ export const scorePosition = (
 
   for (let i = 0; i < 4; i++) {
     if (gameGrid[row][column] === 'red') {
-      playerPoints++; // Add for each human chip
+      // Add for each human counter
+      playerPoints++;
     } else if (gameGrid[row][column] === 'yellow') {
-      CPUPoints++; // Add for each computer chip
+      // Add for each cpu counter
+      CPUPoints++;
     }
 
     // Moving through our board
@@ -27,10 +29,10 @@ export const scorePosition = (
 
   // Marking winning/returning score
   if (playerPoints === 4) {
-    // Computer won (100000)
+    // Computer won (Infiniry)
     return -gameScore;
   } else if (CPUPoints === 4) {
-    // Human won (-100000)
+    // Human won (-Infiniry)
     return gameScore;
   } else {
     // Return normal points
@@ -44,7 +46,6 @@ export const boardScore = (
 ): number => {
   let gameRows = 6;
   let gameColumns = 7;
-  //   Delete and move to another place?
 
   let points = 0;
 
@@ -70,9 +71,9 @@ export const boardScore = (
   // [ ][ ][x][ ][ ][ ][ ] 5
 
   for (let row = 0; row < gameRows - 3; row++) {
-    // Für jede Column überprüfen
+    // Check for each column
     for (let column = 0; column < gameColumns; column++) {
-      // Die Column bewerten und zu den Punkten hinzufügen
+      // Rate the column and add to the points
       let score = scorePosition(row, column, 1, 0, gameGrid, gameScore);
       if (score === gameScore) return gameScore;
       if (score === -gameScore) return -gameScore;
@@ -92,7 +93,9 @@ export const boardScore = (
   // [ ][ ][ ][ ][ ][ ][ ] 4
   // [ ][ ][ ][ ][ ][ ][ ] 5
   for (let row = 0; row < gameRows; row++) {
+    //  Check for each column
     for (let column = 0; column < gameColumns - 3; column++) {
+      // Rate the column and add to the points
       let score = scorePosition(row, column, 0, 1, gameGrid, gameScore);
       if (score === gameScore) return gameScore;
       if (score === -gameScore) return -gameScore;
@@ -111,7 +114,9 @@ export const boardScore = (
   // [ ][ ][ ][ ][ ][ ][ ] 4
   // [ ][ ][ ][ ][ ][ ][ ] 5
   for (let row = 0; row < gameRows - 3; row++) {
+    // Check for each column
     for (let column = 0; column < gameColumns - 3; column++) {
+      // Rate the column and add to the points
       let score = scorePosition(row, column, 1, 1, gameGrid, gameScore);
       if (score === gameScore) return gameScore;
       if (score === -gameScore) return -gameScore;
@@ -130,7 +135,9 @@ export const boardScore = (
   // [ ][ ][ ][ ][ ][ ][ ] 4
   // [ ][ ][ ][ ][ ][ ][ ] 5
   for (var row = 3; row < gameRows; row++) {
+    // Check for each column
     for (var column = 0; column <= gameColumns - 4; column++) {
+      // Rate the column and add to the points
       var score = scorePosition(row, column, -1, +1, gameGrid, gameScore);
       if (score === gameScore) return gameScore;
       if (score === -gameScore) return -gameScore;

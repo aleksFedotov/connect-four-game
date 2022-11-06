@@ -9,6 +9,7 @@ const Counter: React.FC<{ bg: string; row: number; isWin: boolean }> = ({
   return (
     <CounterElement
       bg={bg}
+      // based of row number we have different initial start position for animation
       animate={{ y: [-(80 * row + 70), 0, -50, 0, -20, 0] }}
       transition={{
         duration: 0.4,
@@ -16,6 +17,7 @@ const Counter: React.FC<{ bg: string; row: number; isWin: boolean }> = ({
       }}
       data-testid="counter"
     >
+      {/* if counter in wining combo white circle renders */}
       {isWin && (
         <WhiteCircle
           data-testid="winnigCounter"

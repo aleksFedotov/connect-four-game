@@ -1,5 +1,6 @@
 {
   "name": "connect-four-game",
+  "homepage": "https://aleksfedotov.github.io/connect-four-game/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -23,6 +24,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -56,6 +59,7 @@
     "@types/styled-components": "^5.1.26",
     "codegen.macro": "^4.1.0",
     "cypress": "^10.11.0",
+    "gh-pages": "^4.0.0",
     "jest-svg-transformer": "^1.0.0"
   }
 }

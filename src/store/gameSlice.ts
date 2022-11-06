@@ -6,8 +6,6 @@ import { counter } from '../helpers/helpers';
 import { store } from './store';
 import { checkForWin } from '../helpers/checkForWin';
 
-// import { wrap } from 'comlink';
-
 type player = {
   name: string;
   color: string;
@@ -109,7 +107,7 @@ const gameSlice = createSlice({
       state.timer = 30;
       state.isGamePaused = false;
       state.winnigComb = {};
-
+      // change turn color to color that was second in previous round
       state.turn = state.starterColor === 'red' ? 'yellow' : 'red';
       state.starterColor = state.starterColor === 'red' ? 'yellow' : 'red';
       state.currentPlayer = state.p1.color === state.turn ? 'p1' : 'p2';
@@ -121,7 +119,7 @@ const gameSlice = createSlice({
       state.timer = 30;
       state.isGamePaused = false;
       state.winnigComb = {};
-
+      // return initial turn color
       state.turn = state.starterColor;
 
       state.currentPlayer = state.p1.color === state.turn ? 'p1' : 'p2';
@@ -156,6 +154,7 @@ const gameSlice = createSlice({
   },
 });
 
+// exporting all actions that we need
 export const {
   startGame,
   placeCounter,
@@ -173,6 +172,8 @@ export const {
   checkForTie,
   setPointercolumn,
 } = gameSlice.actions;
+
+// exporting all states that we need
 export const selectGameIsRunning = (state: RootState) =>
   state.game.gameIsRunning;
 export const selectPlayer1 = (state: RootState) => state.game.p1;
@@ -192,6 +193,7 @@ export const selectIsGamePaused = (state: RootState) => state.game.isGamePaused;
 export const selectCurrentPlayer = (state: RootState) =>
   state.game.currentPlayer;
 
+// exporting reducer
 export const gameReducer = gameSlice.reducer;
 
 export const makeMove = (col: number) => {
@@ -199,45 +201,29 @@ export const makeMove = (col: number) => {
     dispatch: typeof store.dispatch,
     getState: typeof store.getState
   ): boolean => {
+    // getting current game settings
     const { game } = getState();
     const gameBoard = game.gameBoard;
-
+    // if column is full or there is a winner or animation is in process when return false
     if (gameBoard[0][col] || game.winner || !game.isTimeForNextTurn)
       return false;
-
+    // set time to next turn to false to prevent amking move before end of animation
     dispatch(setIsTimeToNextTurn(false));
+    // getting row in column with empty cell
     const row = findRowToLandCounter(gameBoard, col);
+    // place counter
     dispatch(placeCounter({ col, row }));
     // checkforwin
     dispatch(checkForWinner({ col, row }));
+    // checking for tie
     dispatch(checkForTie());
+    // change turn
     dispatch(changeTurn());
-
+    // after 0.4s we set time to next turn to true
+    // we need this time to make sure that counter animation is finished
     setTimeout(() => {
       dispatch(setIsTimeToNextTurn(true));
     }, 400);
     return true;
   };
 };
-
-// const worker = new Worker(new URL('../helpers/worker.ts', import.meta.url), {
-//   name: 'aiMoveWorker',
-//   type: 'module',
-// });
-
-// const { maximizePlay } = wrap<import('../helpers/worker').AiMoveWorker>(worker);
-
-// export const aiMove = () => {
-//   return async (
-//     dispatch: typeof store.dispatch,
-//     getState: typeof store.getState
-//   ) => {
-//     const { game } = getState();
-
-//     let aiMove = await maximizePlay(game.gameBoard, game.CPULevel, Infinity);
-
-//     if (typeof aiMove !== 'undefined' && aiMove[0] !== null) {
-//       dispatch(makeMove(aiMove[0]));
-//     }
-//   };
-// };

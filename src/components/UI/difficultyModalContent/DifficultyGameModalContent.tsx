@@ -16,6 +16,10 @@ const DifficaltyGameModalContent = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  // Select difficulty level for CPU, level defines depth for minimax algo
+  // easy - depth 2
+  // medium - depth 6
+  // hard - depth 8
   const selectDifficultyHandler = (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>
   ) => {

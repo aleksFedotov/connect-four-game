@@ -18,6 +18,8 @@ type winComb = {
 const min = (num: number): number => Math.max(num - 3, 0);
 const max = (num: number, max: number): number => Math.min(num + 3, max);
 
+// chek for win inspired by https://stackoverflow.com/questions/32770321/connect-4-check-for-a-win-algorithm
+
 const getWinner = (
   firstSegment: number[],
   secondSegment: number[],
@@ -27,14 +29,19 @@ const getWinner = (
   turn: string
 ): boolean | winComb => {
   const segments = [firstSegment, secondSegment, thirdegment, fourthSegment];
+  // check if where is more then 4 coutners in segement
   if (segments.length !== 4) return false;
   let counters = segments.map(([row, col]) => {
+    // get counter from game board
     return getCounter(row, col, gameGrid);
   });
 
+  // get color
   const color = counters[0];
-
+  // if there is no color --> segment is not completed
   if (!color) return false;
+  // if every color in segment is the same is win retrun
+  // winner color and win combo segemnts
   if (counters.every((c) => c === turn)) {
     return { winner: turn, segments };
   }
@@ -42,12 +49,14 @@ const getWinner = (
   return false;
 };
 
+// Check for all possible horizontal segmetns near counter that were places
 const checkHorizontalSegments = (
   { focalRow, minCol, maxCol, focalCol }: coordinates,
   gameGrid: counter[][],
   turn: string
 ) => {
   for (let row = focalRow, col = minCol; col <= maxCol; col++) {
+    // Check segment for win
     const winner = getWinner(
       [row, col],
       [row, col + 1],
@@ -61,6 +70,8 @@ const checkHorizontalSegments = (
   }
   return false;
 };
+
+// Check for all possible vertical segmetns near counter that were places
 
 const checkVerticalSegments = (
   { focalRow, focalCol, minRow, maxRow }: coordinates,
@@ -80,7 +91,7 @@ const checkVerticalSegments = (
   }
   return false;
 };
-
+// Check for all possible diagonal \ near counter that were places
 const checkForwardSlashSegments = (
   { focalRow, focalCol, minRow, minCol, maxRow, maxCol }: coordinates,
   gameGrid: counter[][],
@@ -111,7 +122,7 @@ const checkForwardSlashSegments = (
   }
   return false;
 };
-
+// Check for all possible diagonal / near counter that were places
 const checkBackwardSlashSegments = (
   { focalRow, focalCol, minRow, minCol, maxRow, maxCol }: coordinates,
   gameGrid: counter[][],
@@ -148,6 +159,14 @@ export const checkForWin = (
   gameGrid: counter[][],
   turn: string
 ) => {
+  // difenes min and max columns and rows for particular counter
+  //  0  1  2  3  4  5  6
+  // [ ][ ][ ][ ][ ][ ][ ] 0
+  // [x][our counter][x][x][ ][ ][ ] 1
+  // [ ][ ][ ][ ][ ][ ][ ] 2
+  // [ ][ ][ ][ ][ ][ ][ ] 3
+  // [ ][ ][ ][ ][ ][ ][ ] 4
+  // [ ][ ][ ][ ][ ][ ][ ] 5
   const minCol = min(focalCol);
   const maxCol = max(focalCol, 6);
   const minRow = min(focalRow);

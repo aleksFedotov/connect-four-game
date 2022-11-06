@@ -9,36 +9,26 @@ import {
   selectIsTimeForNextTurn,
   setPointercolumn,
 } from '../../../store/gameSlice';
-// import { useSelector } from 'react-redux';
+
 import { aiMove } from '../../../store/aiMove';
 import GamePointer from '../../UI/pointer/Pointer';
 
-// import { ReactComponent as PointerRed } from '../../../assets/images/marker-red.svg';
-// import { ReactComponent as PointerYellow } from '../../../assets/images/marker-yellow.svg';
-
-// import { wrap } from 'comlink';
-
 const columns = Array(7).fill(null);
-// const worker = new Worker(
-//   new URL('../../../helpers/worker.ts', import.meta.url),
-//   { name: 'aiMoveWorker', type: 'module' }
-// );
 
 const ControlGrid: React.FC = () => {
-  // const [columnNumber, setColumnNumber] = useState('0');
-  // const turn = useAppSelector(selectTurn);
   const isTimeForNextTurn = useAppSelector(selectIsTimeForNextTurn);
   const gameMode = useAppSelector(selectGameMode);
   const currentPlayer = useAppSelector(selectCurrentPlayer);
 
   const dispatch = useAppDispatch();
-
+  // CPU move monitoring
   useEffect(() => {
     if (currentPlayer === 'p2' && gameMode === 'CPUvP' && isTimeForNextTurn) {
       dispatch(aiMove());
     }
   }, [dispatch, isTimeForNextTurn, currentPlayer, gameMode]);
 
+  // Moving pointer
   const mouseHoverHandler = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -47,6 +37,7 @@ const ControlGrid: React.FC = () => {
     );
   };
 
+  // Player move handler
   const columnClickHandler = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -58,14 +49,8 @@ const ControlGrid: React.FC = () => {
     }
   };
 
-  // const PointerIcon = turn === 'red' ? PointerRed : PointerYellow;
   return (
     <Control data-testid="control">
-      {/* <PointerWrapper>
-        <Pointer columnnumber={columnNumber} data-testid="pointer">
-          <PointerIcon data-testid={`color-${turn}`} />
-        </Pointer>
-      </PointerWrapper> */}
       <GamePointer />
       {columns.map((_, ind) => {
         return (

@@ -19,15 +19,16 @@ const MainMenuContext: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  // Game Rules button handler
   const gameRulesHandler = () => {
     navigate('/rules');
   };
-
+  // PvP mode button handler
   const PvPhandler = () => {
     dispatch(startGame('PvP'));
     navigate('/game');
   };
-
+  // CPUvP mode button handler
   const CPUvPHandler = () => {
     dispatch(toggleModal('mainMenu'));
   };

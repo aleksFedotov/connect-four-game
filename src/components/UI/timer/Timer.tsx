@@ -40,6 +40,7 @@ const Timer: React.FC = () => {
       ? 'your'
       : `${game[currentPlayer].name}'s`;
 
+  // keep tracking of current timer, not the best one but for 30s interval is enough
   useEffect(() => {
     if (isGamePaused) return;
     const timeout = setTimeout(function () {

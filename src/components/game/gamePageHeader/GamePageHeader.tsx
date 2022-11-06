@@ -11,11 +11,12 @@ import { pauseGame, restartGame } from '../../../store/gameSlice';
 const GamePageHeader: React.FC = () => {
   const dispatch = useAppDispatch();
 
+  // Menu button handler
   const menuHandler = () => {
     dispatch(pauseGame());
     dispatch(toggleModal('gameMenu'));
   };
-
+  // Restart button handler
   const restartHandler = () => {
     dispatch(restartGame());
   };

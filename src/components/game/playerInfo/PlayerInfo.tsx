@@ -34,7 +34,7 @@ const PlayerInfo: React.FC<{ player: string }> = ({ player }) => {
   const gameMode = useAppSelector(selectGameMode);
   const p1 = useAppSelector(selectPlayer1);
   const p2 = useAppSelector(selectPlayer2);
-
+  // render needed svg base on player name and game mode
   const PalyerIcon = gameMode === 'PvP' ? iconsPVP[player] : iconsPVCPU[player];
 
   return (
@@ -48,6 +48,7 @@ const PlayerInfo: React.FC<{ player: string }> = ({ player }) => {
       animate="visible"
       exit="exit"
     >
+      {/* depenends on if it player1 or player2 we render different data */}
       <PlayerName>{player === 'player1' ? p1.name : p2.name}</PlayerName>
 
       <Score data-testid={`${player}-score`}>

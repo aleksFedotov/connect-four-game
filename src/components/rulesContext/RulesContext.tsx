@@ -14,6 +14,8 @@ import { useNavigate } from 'react-router-dom';
 
 const RulesContext: React.FC = () => {
   const navigate = useNavigate();
+
+  // Return button handler
   const clickHandler = () => {
     navigate('/');
   };
